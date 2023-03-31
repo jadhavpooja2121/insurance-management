@@ -1,5 +1,6 @@
 package com.insurance.usermanagementservice.models;
 
+import java.sql.Timestamp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,5 +22,5 @@ public class Client {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String name;
-  private Long dob;
+  private Timestamp dob;
 }
