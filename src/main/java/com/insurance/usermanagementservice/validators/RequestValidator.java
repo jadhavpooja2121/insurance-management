@@ -9,7 +9,8 @@ import com.insurance.usermanagementservice.responseDOs.MessageResponseDO;
 public class RequestValidator {
 
   public static MessageResponseDO isClientRequestValid(Client client) {
-    if (client == null || client.getName() == null || client.getDob() == null) {
+    if (client == null || client.getName() == null || client.getDob() == null
+        || client.getAddress() == null || client.getContactNumber() == null) {
       return new MessageResponseDO(Constants.INVALID_CLIENT_DATA,
           Constants.INVALID_CLIENT_DATA_MESSAGE);
     }

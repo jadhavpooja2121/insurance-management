@@ -68,6 +68,8 @@ public class ClientService {
       if (existingclient != null) {
         existingclient.setDob(client.getDob());
         existingclient.setName(client.getName());
+        existingclient.setAddress(client.getAddress());
+        existingclient.setContactNumber(client.getContactNumber());
         Client updatedClient = clientRepository.save(existingclient);
         completableFuture.complete(
             ResponseEntity.ok(new SuccessResponseDO<>(HttpStatus.OK.value(), updatedClient)));

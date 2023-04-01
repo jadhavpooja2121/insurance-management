@@ -24,4 +24,6 @@ public class Client {
   private int id;
   private String name;
   private Timestamp dob;
+  private String address;
+  private Long contactNumber;
 }
