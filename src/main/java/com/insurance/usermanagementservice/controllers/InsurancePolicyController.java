@@ -15,30 +15,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import com.insurance.usermanagementservice.constants.Constants;
-import com.insurance.usermanagementservice.models.Client;
+import com.insurance.usermanagementservice.models.InsurancePolicy;
 import com.insurance.usermanagementservice.responseDOs.MessageResponseDO;
-import com.insurance.usermanagementservice.services.ClientService;
+import com.insurance.usermanagementservice.services.InsurancePolicyService;
 import com.insurance.usermanagementservice.validators.RequestValidator;
 
 @RestController
-public class ClientController {
-  private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
-
+public class InsurancePolicyController {
+  private static final Logger logger = LoggerFactory.getLogger(InsurancePolicyController.class);
+  
   @Autowired
-  private ClientService clientService;
-
-  @PostMapping(value = "/api/clients", produces = MediaType.APPLICATION_JSON_VALUE,
+  private InsurancePolicyService insurancePolicyService;
+  
+  @PostMapping(value = "/api/policies", produces = MediaType.APPLICATION_JSON_VALUE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
-  public DeferredResult<ResponseEntity<?>> saveClient(@RequestBody Client client) {
+  public DeferredResult<ResponseEntity<?>> savePolicy(@RequestBody InsurancePolicy InsurancePolicy) {
     DeferredResult<ResponseEntity<?>> deferredResult = new DeferredResult<ResponseEntity<?>>();
     try {
       CompletableFuture<ResponseEntity<?>> completableFuture =
           new CompletableFuture<ResponseEntity<?>>();
-      MessageResponseDO errorResponse = RequestValidator.isClientRequestValid(client);
+      MessageResponseDO errorResponse = RequestValidator.isInsurancePolicyRequestValid(InsurancePolicy);
       if (errorResponse != null) {
         completableFuture.complete(ResponseEntity.ok(errorResponse));
       }
-      clientService.save(client, completableFuture);
+      insurancePolicyService.save(InsurancePolicy, completableFuture);
       completableFuture.thenAccept(result -> deferredResult.setResult(result));
     } catch (Exception e) {
       logger.info("Exception occured while processing the request due to: {}", e.getMessage());
@@ -46,8 +46,8 @@ public class ClientController {
     return deferredResult;
   }
 
-  @GetMapping(value = "/api/clients/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public DeferredResult<ResponseEntity<?>> getClient(@PathVariable Integer id) {
+  @GetMapping(value = "/api/policies/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public DeferredResult<ResponseEntity<?>> getInsurancePolicy(@PathVariable Integer id) {
     DeferredResult<ResponseEntity<?>> deferredResult = new DeferredResult<ResponseEntity<?>>();
     try {
       CompletableFuture<ResponseEntity<?>> completableFuture =
@@ -57,7 +57,7 @@ public class ClientController {
         completableFuture.complete(ResponseEntity
             .ok(new MessageResponseDO(Constants.INVALID_ID, Constants.INVALID_ID_MESSAGE)));
       }
-      clientService.getClient(id, completableFuture);
+      insurancePolicyService.getInsurancePolicy(id, completableFuture);
       completableFuture.thenAccept(result -> deferredResult.setResult(result));
     } catch (Exception e) {
       logger.info("Exception occured while processing the request due to: {}", e.getMessage());
@@ -65,13 +65,13 @@ public class ClientController {
     return deferredResult;
   }
   
-  @GetMapping(value = "/api/clients", produces = MediaType.APPLICATION_JSON_VALUE)
-  public DeferredResult<ResponseEntity<?>> getClients() {
+  @GetMapping(value = "/api/policies", produces = MediaType.APPLICATION_JSON_VALUE)
+  public DeferredResult<ResponseEntity<?>> getpolicies() {
     DeferredResult<ResponseEntity<?>> deferredResult = new DeferredResult<ResponseEntity<?>>();
     try {
       CompletableFuture<ResponseEntity<?>> completableFuture =
           new CompletableFuture<ResponseEntity<?>>();
-      clientService.getClients(completableFuture);
+      insurancePolicyService.getInsurancePolicies(completableFuture);
       completableFuture.thenAccept(result -> deferredResult.setResult(result));
     } catch (Exception e) {
       logger.info("Exception occured while processing the request due to: {}", e.getMessage());
@@ -79,8 +79,8 @@ public class ClientController {
     return deferredResult;
   }
   
-  @PutMapping(value = "/api/clients/{id}", produces = MediaType.APPLICATION_JSON_VALUE,  consumes = MediaType.APPLICATION_JSON_VALUE)
-  public DeferredResult<ResponseEntity<?>> updateClient(@PathVariable Integer id, @RequestBody Client client) {
+  @PutMapping(value = "/api/policies/{id}", produces = MediaType.APPLICATION_JSON_VALUE,  consumes = MediaType.APPLICATION_JSON_VALUE)
+  public DeferredResult<ResponseEntity<?>> updateInsurancePolicy(@PathVariable Integer id, @RequestBody InsurancePolicy InsurancePolicy) {
     DeferredResult<ResponseEntity<?>> deferredResult = new DeferredResult<ResponseEntity<?>>();
     try {
       CompletableFuture<ResponseEntity<?>> completableFuture =
@@ -91,12 +91,12 @@ public class ClientController {
             .ok(new MessageResponseDO(Constants.INVALID_ID, Constants.INVALID_ID_MESSAGE)));
         return deferredResult;
       }
-      MessageResponseDO errorResponse = RequestValidator.isClientRequestValid(client);
+      MessageResponseDO errorResponse = RequestValidator.isInsurancePolicyRequestValid(InsurancePolicy);
       if (errorResponse != null) {
         completableFuture.complete(ResponseEntity.ok(errorResponse));
         return deferredResult;
       }
-      clientService.updateClient(id, client, completableFuture);
+      insurancePolicyService.updateInsurancePolicy(id, InsurancePolicy, completableFuture);
       completableFuture.thenAccept(result -> deferredResult.setResult(result));
     } catch (Exception e) {
       logger.info("Exception occured while processing the request due to: {}", e.getMessage());
@@ -104,8 +104,8 @@ public class ClientController {
     return deferredResult;
   }
   
-  @DeleteMapping(value = "/api/clients/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public DeferredResult<ResponseEntity<?>> deleteClient(@PathVariable Integer id) {
+  @DeleteMapping(value = "/api/policies/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public DeferredResult<ResponseEntity<?>> deleteInsurancePolicy(@PathVariable Integer id) {
     DeferredResult<ResponseEntity<?>> deferredResult = new DeferredResult<ResponseEntity<?>>();
     try {
       CompletableFuture<ResponseEntity<?>> completableFuture =
@@ -116,7 +116,7 @@ public class ClientController {
             .ok(new MessageResponseDO(Constants.INVALID_ID, Constants.INVALID_ID_MESSAGE)));
         return deferredResult;
       }
-      clientService.deleteClient(id, completableFuture);
+      insurancePolicyService.deleteInsurancePolicy(id, completableFuture);
       completableFuture.thenAccept(result -> deferredResult.setResult(result));
     } catch (Exception e) {
       logger.info("Exception occured while processing the request due to: {}", e.getMessage());
@@ -124,4 +124,5 @@ public class ClientController {
     return deferredResult;
   }
   
+
 }
