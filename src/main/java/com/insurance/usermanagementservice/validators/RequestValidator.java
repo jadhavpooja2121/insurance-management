@@ -6,7 +6,7 @@ import com.insurance.usermanagementservice.responseDOs.MessageResponseDO;
 
 public class RequestValidator {
 
-  public static MessageResponseDO isSaveClientRequestValid(Client client) {
+  public static MessageResponseDO isClientRequestValid(Client client) {
     if (client == null || client.getName() == null || client.getDob() == null) {
       return new MessageResponseDO(Constants.INVALID_CLIENT_DATA,
           Constants.INVALID_CLIENT_DATA_MESSAGE);

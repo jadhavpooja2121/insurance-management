@@ -8,4 +8,5 @@ public class Constants {
   public static final String INVALID_ID_MESSAGE = "Id is not valid";
   public static final Integer RESOURCE_NOT_FOUND_CODE = 1003;
   public static final String RESOURCE_NOT_FOUND = "The requested resource is not found";
+  public static final String DELETION_SUCCESS = "Resource has been deleted successfully";
 }

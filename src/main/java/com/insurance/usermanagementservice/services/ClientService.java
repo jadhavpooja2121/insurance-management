@@ -29,6 +29,7 @@ public class ClientService {
         ResponseEntity.ok(new MessageResponseDO(HttpStatus.OK.value(), Constants.SUCCESS_MESSAGE)));
   }
 
+  @Async
   public void getClient(Integer id, CompletableFuture<ResponseEntity<?>> completableFuture) {
     try {
       Client client = clientRepository.findById(id)
@@ -44,5 +45,59 @@ public class ClientService {
     }
   }
 
+  public void getClients(CompletableFuture<ResponseEntity<?>> completableFuture) {
+    try {
+      Iterable<Client> clients = clientRepository.findAll();
+      completableFuture
+          .complete(ResponseEntity.ok(new SuccessResponseDO<>(HttpStatus.OK.value(), clients)));
+    } catch (Exception e) {
+      if (e instanceof ResourceAccessException) {
+        completableFuture
+            .complete(ResponseEntity.ok(new MessageResponseDO(Constants.RESOURCE_NOT_FOUND_CODE,
+                Constants.RESOURCE_NOT_FOUND)));
+      }
+    }
+  }
+
+  @Async
+  public void updateClient(Integer id, Client client,
+      CompletableFuture<ResponseEntity<?>> completableFuture) {
+    try {
+      Client existingclient = clientRepository.findById(id)
+          .orElseThrow(() -> new ResourceAccessException("Requested resource is not found"));
+      if (existingclient != null) {
+        existingclient.setDob(client.getDob());
+        existingclient.setName(client.getName());
+        Client updatedClient = clientRepository.save(existingclient);
+        completableFuture.complete(
+            ResponseEntity.ok(new SuccessResponseDO<>(HttpStatus.OK.value(), updatedClient)));
+      }
+    } catch (Exception e) {
+      if (e instanceof ResourceAccessException) {
+        completableFuture
+            .complete(ResponseEntity.ok(new MessageResponseDO(Constants.RESOURCE_NOT_FOUND_CODE,
+                Constants.RESOURCE_NOT_FOUND)));
+      }
+    }
+  }
+
+  @Async
+  public void deleteClient(Integer id, CompletableFuture<ResponseEntity<?>> completableFuture) {
+    try {
+      Client existingclient = clientRepository.findById(id)
+          .orElseThrow(() -> new ResourceAccessException("Requested resource is not found"));
+      if (existingclient != null) {
+        clientRepository.deleteById(id);
+        completableFuture.complete(ResponseEntity
+            .ok(new MessageResponseDO(HttpStatus.OK.value(), Constants.DELETION_SUCCESS)));
+      }
+    } catch (Exception e) {
+      if (e instanceof IllegalArgumentException) {
+        completableFuture
+            .complete(ResponseEntity.ok(new MessageResponseDO(Constants.RESOURCE_NOT_FOUND_CODE,
+                Constants.RESOURCE_NOT_FOUND)));
+      }
+    }
+  }
 
 }
