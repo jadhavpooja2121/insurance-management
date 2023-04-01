@@ -10,6 +10,8 @@ public class Constants {
   public static final Integer RESOURCE_NOT_FOUND_CODE = 1003;
   public static final String RESOURCE_NOT_FOUND = "The requested resource is not found";
   public static final String DELETION_SUCCESS = "Resource has been deleted successfully";
-  public static final Integer INVALID_POLICY_DATA_CODE=1004;
-  public static final String INVALID_POLICY_DATA = "All fields are required";
+  public static final Integer INVALID_POLICY_DATA_CODE = 1004;
+  public static final String INVALID_POLICY_DATA = "Invalid policy data! All fields are required";
+  public static final String INVALID_CLAIM_DATA = "Invalid claim data! All fields are required.";
+  public static final Integer INVALID_CLAIM_DATA_CODE = 1005;
 }
